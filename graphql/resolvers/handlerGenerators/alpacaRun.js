@@ -83,5 +83,4 @@ async function updateRunScore(args) {
 module.exports = {
   getRunLeaderboards,
   updateRunScore,
-  createLeaderboard
 }

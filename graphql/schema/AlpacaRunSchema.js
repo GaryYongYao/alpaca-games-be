@@ -15,7 +15,6 @@ getRunLeaderboards: [RunScore]
 `
 
 const alpacaRunMutation = `
-createLeaderboard: String
 updateRunScore(code: String!): String
 `
 
