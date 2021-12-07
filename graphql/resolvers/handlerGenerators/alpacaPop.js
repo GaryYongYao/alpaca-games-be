@@ -1,10 +1,10 @@
 const moment = require('moment')
-const AlpacaRun = require('../../../models/alpaca_run')
+const AlpacaPop = require('../../../models/alpaca_pop')
 const { decrypt } = require('../../../utils/crypto')
 
-async function getRunLeaderboards() {
+async function getPopLeaderboards() {
   try {
-    const data = await AlpacaRun.find({ totalScore: { $gt: 0 } }).sort({ totalScore: -1 }).limit(200)
+    const data = await AlpacaPop.find({ totalScore: { $gt: 0 } }).sort({ totalScore: -1 }).limit(200)
 
     return data
   }
@@ -13,14 +13,14 @@ async function getRunLeaderboards() {
   }
 }
 
-async function updateRunScore(args) {
+async function updatePopScore(args) {
   try {
     const { code } = args; //retrieve values from arguments
 
     const decoded = await decrypt(code)
     const { tokenId, score } = JSON.parse(decoded)
 
-    const { _doc } = await AlpacaRun.findOne({ tokenId })
+    const { _doc } = await AlpacaPop.findOne({ tokenId })
 
     const updatedScore= {
       ..._doc,
@@ -29,7 +29,7 @@ async function updateRunScore(args) {
       updateDate: moment()
     }
 
-    const alpacaRun = await AlpacaRun.findOneAndUpdate( 
+    const alpacaPop = await AlpacaPop.findOneAndUpdate( 
       { tokenId },
       { ...updatedScore },
       {new: true}
@@ -43,6 +43,6 @@ async function updateRunScore(args) {
 }
 
 module.exports = {
-  getRunLeaderboards,
-  updateRunScore,
+  getPopLeaderboards,
+  updatePopScore,
 }
