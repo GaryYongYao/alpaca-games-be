@@ -12,6 +12,7 @@ type PopScore {
 
 const alpacaPopQuery = `
 getPopLeaderboards: [PopScore]
+getPopById(id: String!): PopScore
 `
 
 const alpacaPopMutation = `

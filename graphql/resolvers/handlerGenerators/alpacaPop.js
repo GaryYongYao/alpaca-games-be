@@ -13,6 +13,18 @@ async function getPopLeaderboards() {
   }
 }
 
+async function getPopById(args) {
+  try {
+    const { id } = args;
+    const data = await AlpacaPop.findOne({ tokenId: id })
+
+    return data
+  }
+  catch(err) {
+    throw err
+  }
+}
+
 async function updatePopScore(args) {
   try {
     const { code } = args; //retrieve values from arguments
@@ -44,5 +56,6 @@ async function updatePopScore(args) {
 
 module.exports = {
   getPopLeaderboards,
+  getPopById,
   updatePopScore,
 }
