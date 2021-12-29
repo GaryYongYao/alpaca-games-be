@@ -13,6 +13,18 @@ async function getRunLeaderboards() {
   }
 }
 
+async function getRunById(args) {
+  try {
+    const { id } = args;
+    const data = await AlpacaRun.findOne({ tokenId: id })
+
+    return data
+  }
+  catch(err) {
+    throw err
+  }
+}
+
 async function updateRunScore(args) {
   try {
     const { code } = args; //retrieve values from arguments
@@ -44,5 +56,6 @@ async function updateRunScore(args) {
 
 module.exports = {
   getRunLeaderboards,
+  getRunById,
   updateRunScore,
 }

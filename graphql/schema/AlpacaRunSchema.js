@@ -12,6 +12,7 @@ type RunScore {
 
 const alpacaRunQuery = `
 getRunLeaderboards: [RunScore]
+getRunById(id: String!): RunScore
 `
 
 const alpacaRunMutation = `
