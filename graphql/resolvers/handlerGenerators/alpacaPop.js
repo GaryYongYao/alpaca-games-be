@@ -54,8 +54,23 @@ async function updatePopScore(args) {
   }
 }
 
+async function resetPop() {
+  try {
+    await AlpacaPop.updateMany(
+      {},
+      { $set: { 'totalScore': 0 }}
+    )
+
+    return 'Updated'
+  }
+  catch(err) {
+    throw err
+  }
+}
+
 module.exports = {
   getPopLeaderboards,
   getPopById,
   updatePopScore,
+  resetPop
 }

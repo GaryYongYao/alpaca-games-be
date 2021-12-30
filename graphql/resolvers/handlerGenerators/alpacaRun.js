@@ -59,9 +59,17 @@ async function updateRunScore(args) {
   }
 }
 
-async function updateRunField() {
+async function resetRun() {
   try {
-    await AlpacaRun.updateMany({}, { $set: { "highScore": 0, "pastHighScore": 0 }})
+    await AlpacaRun.updateMany(
+      {},
+      { 
+        $set: {
+          'totalScore': 0,
+          'highScore': 0
+        }
+      }
+    )
 
     return 'Updated'
   }
@@ -74,5 +82,5 @@ module.exports = {
   getRunLeaderboards,
   getRunById,
   updateRunScore,
-  updateRunField
+  resetRun
 }

@@ -24,7 +24,7 @@ getRunById(id: String!): RunScore
 
 const alpacaRunMutation = `
 updateRunScore(code: String!): String
-updateRunField: String
+resetRun: String
 `
 
 module.exports = {

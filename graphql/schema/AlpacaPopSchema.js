@@ -17,6 +17,7 @@ getPopById(id: String!): PopScore
 
 const alpacaPopMutation = `
 updatePopScore(code: String!): String
+resetPop: String
 `
 
 module.exports = {
