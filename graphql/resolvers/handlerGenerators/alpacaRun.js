@@ -4,9 +4,13 @@ const { decrypt } = require('../../../utils/crypto')
 
 async function getRunLeaderboards() {
   try {
-    const data = await AlpacaRun.find({ totalScore: { $gt: 0 } }).sort({ totalScore: -1 }).limit(200)
+    const totalLeader = await AlpacaRun.find({ totalScore: { $gt: 0 } }).sort({ totalScore: -1 }).limit(500)
+    const singleRoundLeader = await AlpacaRun.find({ highScore: { $gt: 0 } }).sort({ highScore: -1 }).limit(500)
 
-    return data
+    return {
+      singleRoundLeader,
+      totalLeader
+    }
   }
   catch(err) {
     throw err
@@ -37,6 +41,7 @@ async function updateRunScore(args) {
     const updatedScore= {
       ..._doc,
       totalScore: _doc.totalScore + score,
+      highScore: score > _doc.highScore ? score : _doc.highScore,
       latestScore: score,
       updateDate: moment()
     }
@@ -54,8 +59,20 @@ async function updateRunScore(args) {
   }
 }
 
+async function updateRunField() {
+  try {
+    await AlpacaRun.updateMany({}, { $set: { "highScore": 0, "pastHighScore": 0 }})
+
+    return 'Updated'
+  }
+  catch(err) {
+    throw err
+  }
+}
+
 module.exports = {
   getRunLeaderboards,
   getRunById,
   updateRunScore,
+  updateRunField
 }

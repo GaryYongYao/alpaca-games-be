@@ -14,6 +14,14 @@ const AlpacaRunSchema = new Schema({
   pastMonthScore: {
     type: Number,
     required: true
+  }, //total
+  highScore: {
+    type: Number,
+    required: true
+  },
+  pastHighScore: {
+    type: Number,
+    required: true
   },
   latestScore: {
     type: Number,
