@@ -17,6 +17,18 @@ async function getNopacaRunLeaderboards() {
   }
 }
 
+async function getNopacaRunById(args) {
+  try {
+    const { id } = args;
+    const data = await AlpacaRun.findOne({ discord: id })
+
+    return data
+  }
+  catch(err) {
+    throw err
+  }
+}
+
 async function updateNopacaRunScore(args) {
   try {
     const { code } = args; //retrieve values from arguments
@@ -61,5 +73,6 @@ async function updateNopacaRunScore(args) {
 
 module.exports = {
   getNopacaRunLeaderboards,
+  getNopacaRunById,
   updateNopacaRunScore,
 }

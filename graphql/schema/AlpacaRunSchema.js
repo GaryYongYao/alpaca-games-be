@@ -35,6 +35,7 @@ const alpacaRunQuery = `
 getRunLeaderboards: RunLeaderBoard
 getRunById(id: String!): RunScore
 getNopacaRunLeaderboards: NopacaRunLeaderBoard
+getNopacaRunById(id: String!): NopacaRunScore
 `
 
 const alpacaRunMutation = `
