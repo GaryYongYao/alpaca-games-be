@@ -39,6 +39,8 @@ async function updateRunScore(args) {
     const decoded = await decrypt(code)
     const { tokenId, score } = JSON.parse(decoded)
 
+    if (score > 2500) return "Don't Fucking Cheat"
+
     const { _doc } = await AlpacaRun.findOne({ tokenId })
 
     const updatedScore= {

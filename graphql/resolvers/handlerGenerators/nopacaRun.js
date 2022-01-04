@@ -36,6 +36,8 @@ async function updateNopacaRunScore(args) {
     const decoded = await decrypt(code)
     const { discord, score } = JSON.parse(decoded)
 
+    if (score > 2500) return "Don't Fucking Cheat"
+
     const { _doc } = await NopacaRun.findOne({ discord })
 
     if ( _doc ) {
