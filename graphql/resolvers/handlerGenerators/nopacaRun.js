@@ -38,9 +38,10 @@ async function updateNopacaRunScore(args) {
 
     if (score > 2500) return "Don't Fucking Cheat"
 
-    const { _doc } = await NopacaRun.findOne({ discord })
+    const data = await NopacaRun.findOne({ discord })
 
-    if ( _doc ) {
+    if ( data ) {
+      const { _doc } = data;
       const updatedScore= {
         ..._doc,
         totalScore: _doc.totalScore + score,
