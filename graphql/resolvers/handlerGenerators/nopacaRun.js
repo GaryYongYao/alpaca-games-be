@@ -20,7 +20,7 @@ async function getNopacaRunLeaderboards() {
 async function getNopacaRunById(args) {
   try {
     const { id } = args;
-    const data = await AlpacaRun.findOne({ discord: id })
+    const data = await NopacaRun.findOne({ discord: id })
 
     return data
   }
