@@ -56,7 +56,7 @@ async function updateNopacaRunScore(args) {
         }
     
         const nopacaRun = await NopacaRun.findOneAndUpdate( 
-          { tokenId },
+          { discord },
           { ...updatedScore },
           {new: true}
         )
