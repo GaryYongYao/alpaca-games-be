@@ -48,10 +48,11 @@ async function updateNopacaRunScore(args) {
         let record = `unrealistic score - ${score} / csv ${csv}`
         if (gs.toFixed(2) != 18 + (0.01 * (csv)))  record = `game speed tempering - gamespeed cal ${gs.toFixed(2) != 18 + (0.01 * (csv))} / csv ${csv}`
         if (csv !== calibrate)  record = `calibration tempering - ${calibrate} / csv ${csv}`
+        records.unshift(record)
   
         const updatedScore= {
           ..._doc,
-          records: records.unshift(record),
+          records,
           updateDate: moment()
         }
     
@@ -63,13 +64,14 @@ async function updateNopacaRunScore(args) {
   
         return "Don't Fucking Cheat"
       }
+      records.unshift(`${score}`)
 
       const updatedScore= {
         ..._doc,
         totalScore: totalScore + score,
         highScore: score > highScore ? score : highScore,
         latestScore: score,
-        records: records.unshift(`${score}`),
+        records,
         updateDate: moment()
       }
   
