@@ -37,17 +37,38 @@ async function updateRunScore(args) {
     const { code } = args; //retrieve values from arguments
 
     const decoded = await decrypt(code)
-    const { tokenId, score } = JSON.parse(decoded)
-
-    if (score > 2500) return "Don't Fucking Cheat"
+    const { tokenId, score, csv, calibrate, gs } = JSON.parse(decoded)
 
     const { _doc } = await AlpacaRun.findOne({ tokenId })
+    const { totalScore, highScore } = _doc
+    const records = _doc.records ? _doc.records : []
+
+    if (score > 2500 || csv !== score || csv !== calibrate || gs.toFixed(2) != 18 + (0.01 * (csv))) {
+      let record = `unrealistic score - ${score} / csv ${csv}`
+      if (gs.toFixed(2) != 18 + (0.01 * (csv)))  recorc = `game speed tempering - gamespeed cal ${gs.toFixed(2) != 18 + (0.01 * (csv))} / csv ${csv}`
+      if (csv !== calibrate)  recorc = `calibration tempering - ${calibrate} / csv ${csv}`
+
+      const updatedScore= {
+        ..._doc,
+        records: records.push(record),
+        updateDate: moment()
+      }
+  
+      const alpacaRun = await AlpacaRun.findOneAndUpdate( 
+        { tokenId },
+        { ...updatedScore },
+        {new: true}
+      )
+
+      return "Don't Fucking Cheat"
+    }
 
     const updatedScore= {
       ..._doc,
-      totalScore: _doc.totalScore + score,
-      highScore: score > _doc.highScore ? score : _doc.highScore,
+      totalScore: totalScore + score,
+      highScore: score > highScore ? score : highScore,
       latestScore: score,
+      records: records.push(`${score}`),
       updateDate: moment()
     }
 

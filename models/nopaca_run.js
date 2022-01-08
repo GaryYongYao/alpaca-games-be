@@ -19,6 +19,10 @@ const NopacaPopSchema = new Schema({
     type: Number,
     required: true
   },
+  records: [{
+    type: String,
+    required: true
+  }],
   updateDate: { type: Date, default: Date.now }
 })
 
