@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
-const NopacaPopSchema = new Schema({
+const NopacaRunSchema = new Schema({
   discord: {
     type: String,
     unique : true,
@@ -26,4 +26,4 @@ const NopacaPopSchema = new Schema({
   updateDate: { type: Date, default: Date.now }
 })
 
-module.exports = mongoose.model('NopacaPop', NopacaPopSchema)
+module.exports = mongoose.model('NopacaRun', NopacaRunSchema)

@@ -42,15 +42,16 @@ async function updateRunScore(args) {
     const { _doc } = await AlpacaRun.findOne({ tokenId })
     const { totalScore, highScore } = _doc
     const records = _doc.records ? _doc.records : []
+    if (records.length === 10) records.pop();
 
     if (score > 2500 || csv !== score || csv !== calibrate || gs.toFixed(2) != 18 + (0.01 * (csv))) {
       let record = `unrealistic score - ${score} / csv ${csv}`
-      if (gs.toFixed(2) != 18 + (0.01 * (csv)))  recorc = `game speed tempering - gamespeed cal ${gs.toFixed(2) != 18 + (0.01 * (csv))} / csv ${csv}`
-      if (csv !== calibrate)  recorc = `calibration tempering - ${calibrate} / csv ${csv}`
+      if (gs.toFixed(2) != 18 + (0.01 * (csv)))  record = `game speed tempering - gamespeed cal ${gs.toFixed(2) != 18 + (0.01 * (csv))} / csv ${csv}`
+      if (csv !== calibrate)  record = `calibration tempering - ${calibrate} / csv ${csv}`
 
       const updatedScore= {
         ..._doc,
-        records: records.push(record),
+        records: records.unshift(record),
         updateDate: moment()
       }
   
@@ -68,7 +69,7 @@ async function updateRunScore(args) {
       totalScore: totalScore + score,
       highScore: score > highScore ? score : highScore,
       latestScore: score,
-      records: records.push(`${score}`),
+      records: records.unshift(`${score}`),
       updateDate: moment()
     }
 
