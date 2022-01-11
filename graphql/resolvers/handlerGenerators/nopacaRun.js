@@ -4,7 +4,7 @@ const { decrypt } = require('../../../utils/crypto')
 
 async function getNopacaRunLeaderboards() {
   try {
-    const totalLeader = await NopacaRun.find({ totalScore: { $gt: 0 } }).sort({ totalScore: -1 }).limit(500)
+    const totalLeader = await NopacaRun.find({ totalScore: { $gt: 0 }, status: { $ne: 'Cheater' } }).sort({ totalScore: -1 }).limit(500)
     const singleRoundLeader = await NopacaRun.find({ highScore: { $gt: 0 } }).sort({ highScore: -1 }).limit(500)
 
     return {
@@ -40,7 +40,8 @@ async function updateNopacaRunScore(args) {
 
     if ( data ) {
       const { _doc } = data;
-      const { totalScore, highScore } = _doc;
+      const { totalScore, highScore, status } = _doc;
+      if ( status === 'Cheater' ) return 'Fucking Cheater'
       const records = _doc.records ? _doc.records : [];
       if (records.length === 10) records.pop();
 
@@ -53,6 +54,8 @@ async function updateNopacaRunScore(args) {
         const updatedScore= {
           ..._doc,
           records,
+          status: 'Cheater',
+          reason: `${record} - ${score}`,
           updateDate: moment()
         }
     
@@ -84,9 +87,18 @@ async function updateNopacaRunScore(args) {
       return 'Updated'
     }
 
-    if (score > 2500) return "Don't Fucking Cheat"
-    if (csv !== score || csv !== calibrate) return "Don't Fucking Cheat"
-    if (gs.toFixed(2) != 18 + (0.01 * (csv))) return "Don't Fucking Cheat"
+    if (score > 2500 || csv !== score || csv !== calibrate || gs.toFixed(2) != 18 + (0.01 * (csv))) {
+
+      const record = new NopacaRun({
+        discord,
+        status: 'Cheater',
+        reason: `Cheat - ${score}`,
+      }, (err) => { if (err) throw err })
+  
+      await record.save()
+
+      return "Don't Fucking Cheat"
+    }
 
     const record = new NopacaRun({
       discord,

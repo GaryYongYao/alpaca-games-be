@@ -31,6 +31,8 @@ const AlpacaRunSchema = new Schema({
     type: String,
     required: true
   }],
+  status: String,
+  reason: String,
   image: String,
   updateDate: { type: Date, default: Date.now }
 })

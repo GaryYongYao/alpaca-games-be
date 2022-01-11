@@ -19,6 +19,8 @@ const AlpacaPopSchema = new Schema({
     type: Number,
     required: true
   },
+  status: String,
+  reason: String,
   image: String,
   updateDate: { type: Date, default: Date.now }
 })

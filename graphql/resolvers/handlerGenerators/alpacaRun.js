@@ -7,7 +7,7 @@ const { decrypt } = require('../../../utils/crypto')
 
 async function getRunLeaderboards() {
   try {
-    const totalLeader = await AlpacaRun.find({ totalScore: { $gt: 0 } }).sort({ totalScore: -1 }).limit(500)
+    const totalLeader = await AlpacaRun.find({ totalScore: { $gt: 0 }, status: { $ne: 'Cheater' } }).sort({ totalScore: -1 }).limit(500)
     const singleRoundLeader = await AlpacaRun.find({ highScore: { $gt: 0 } }).sort({ highScore: -1 }).limit(500)
 
     return {
@@ -40,7 +40,8 @@ async function updateRunScore(args) {
     const { tokenId, score, csv, calibrate, gs } = JSON.parse(decoded)
 
     const { _doc } = await AlpacaRun.findOne({ tokenId })
-    const { totalScore, highScore } = _doc
+    const { totalScore, highScore, status } = _doc
+    if ( status === 'Cheater' ) return 'Fucking Cheater'
     const records = _doc.records ? _doc.records : []
     if (records.length === 10) records.pop();
 
@@ -53,6 +54,8 @@ async function updateRunScore(args) {
       const updatedScore= {
         ..._doc,
         records,
+        status: 'Cheater',
+        reason: `${record} - ${score}`,
         updateDate: moment()
       }
   
@@ -88,8 +91,11 @@ async function updateRunScore(args) {
   }
 }
 
-async function resetRun() {
+async function resetRun(args) {
   try {
+    const { code } = args; 
+    if (!code || code !== 'Cass525Y') return 'Done'
+
     const alpacaTotalRank = await AlpacaRun.find({ totalScore: { $gt: 0 } }).sort({ totalScore: -1 }).limit(3)
     const alpacaSingleRank = await AlpacaRun.find({ highScore: { $gt: 0 } }).sort({ highScore: -1 }).limit(3)
     const nopacaTotalRank = await NopacaRun.find({ totalScore: { $gt: 0 } }).sort({ totalScore: -1 }).limit(3)

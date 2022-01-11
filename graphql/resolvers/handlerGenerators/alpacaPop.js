@@ -54,8 +54,11 @@ async function updatePopScore(args) {
   }
 }
 
-async function resetPop() {
+async function resetPop(args) {
   try {
+    const { code } = args; 
+    if (!code || code !== 'Cass525Y') return 'Done'
+
     await AlpacaPop.updateMany(
       {},
       { $set: { 'totalScore': 0 }}

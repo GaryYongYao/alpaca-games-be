@@ -23,6 +23,8 @@ const NopacaRunSchema = new Schema({
     type: String,
     required: true
   }],
+  status: String,
+  reason: String,
   updateDate: { type: Date, default: Date.now }
 })
 
