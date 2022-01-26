@@ -8,7 +8,7 @@ const { decrypt } = require('../../../utils/crypto')
 async function getRunLeaderboards() {
   try {
     const totalLeader = await AlpacaRun.find({ totalScore: { $gt: 0 }, status: { $ne: 'Cheater' } }).sort({ totalScore: -1 }).limit(500)
-    const singleRoundLeader = await AlpacaRun.find({ highScore: { $gt: 0 } }).sort({ highScore: -1 }).limit(500)
+    const singleRoundLeader = await AlpacaRun.find({ highScore: { $gt: 0 }, status: { $ne: 'Cheater' } }).sort({ highScore: -1 }).limit(500)
 
     return {
       singleRoundLeader,
@@ -47,7 +47,7 @@ async function updateRunScore(args) {
 
     if (score > 2500 || csv !== score || csv !== calibrate || gs.toFixed(2) != 18 + (0.01 * (csv))) {
       let record = `unrealistic score - ${score} / csv ${csv}`
-      if (gs.toFixed(2) != 18 + (0.01 * (csv)))  record = `game speed tempering - gamespeed cal ${gs.toFixed(2) != 18 + (0.01 * (csv))} / csv ${csv}`
+      if (gs.toFixed(2) != 18 + (0.01 * (csv)))  record = `game speed tempering - gamespeed cal ${gs.toFixed(2)} / csv ${csv}`
       if (csv !== calibrate)  record = `calibration tempering - ${calibrate} / csv ${csv}`
       records.unshift(record)
 
